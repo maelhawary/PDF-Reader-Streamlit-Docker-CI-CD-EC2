@@ -27,9 +27,5 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
 
     - name: Pull Docker Image
-      run: docker pull yourusername/yourimage:latest
+      run: docker pull moelhawary/pdfreader:latest
 
-    - name: Deploy to EC2
-      run: |
-        ssh -o StrictHostKeyChecking=no -i /path/to/your/private-key.pem ec2-user@your-ec2-instance-ip "docker stop your-container-name || true && docker rm your-container-name || true"
-        ssh -o StrictHostKeyChecking=no -i /path/to/your/private-key.pem ec2-user@your-ec2-instance-ip "docker run -d --name your-container-name -p 80:80 yourusername/yourimage:latest"
