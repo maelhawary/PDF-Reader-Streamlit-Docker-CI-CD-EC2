@@ -31,7 +31,7 @@ jobs:
     
     - name: Run Docker Image to serve users
       run: |
-        docker run -d -p 8081:8080 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
+        docker run -d -p 8502:8501 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
     - name: Clean previous images and containers
       run: |
         docker system prune -f
