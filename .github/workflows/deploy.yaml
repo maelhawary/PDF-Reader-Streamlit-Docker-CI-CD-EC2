@@ -87,7 +87,7 @@ jobs:
       
       - name: Pull latest images
         run: |
-         docker pull ${{secrets.Docker_LOGIN_URI}}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
+         docker pull moelhawary/pdfreader:latest
          
       # - name: Stop and remove  container if running
       #   run: |
