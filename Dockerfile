@@ -21,7 +21,8 @@ EXPOSE 8501
 # Command to run your application
 #CMD ["streamlit", "run", "app.py"]
 
-ENTRYPOINT ["streamlit", "run", "app.py"]
+#ENTRYPOINT ["streamlit", "run", "app.py"]
 
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
 
 ##To access put localhost:8501 or search for ipconfig and then use IPv4
