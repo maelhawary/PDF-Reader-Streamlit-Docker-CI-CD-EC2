@@ -27,7 +27,7 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
 
     - name: Pull Docker Image
-      run: docker pull moelhawary/pdfreader:latest
+      run: docker pull ${{secrets.Docker_LOGIN_URI}}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
     
     - name: Run Docker Image to serve users
       run: |
