@@ -23,6 +23,6 @@ EXPOSE 8501
 
 #ENTRYPOINT ["streamlit", "run", "app.py"]
 
-CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "app.py"]
 
 ##To access put localhost:8501 or search for ipconfig and then use IPv4
