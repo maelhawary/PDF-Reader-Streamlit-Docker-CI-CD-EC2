@@ -6,9 +6,8 @@ on:
       - main
 
 jobs:
-  integration:
-    name: Continuous Integration
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: self-hosted
 
     steps:
     - name: Checkout Repository
@@ -27,6 +26,13 @@ jobs:
         DOCKER_USERNAME:  ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
 
-    - name: Push-Docker-Image
-      #run: docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
+    #- name: Pull Docker Image
+    #  run: docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
     
+    #- name: Run Docker Image to serve users
+    #  run: |
+    #    docker run -d -p 8006:8501 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
+    #- name: Clean previous images and containers
+    #  run: |
+    #    docker system prune -f
+
