@@ -31,6 +31,6 @@ jobs:
         DOCKER_USERNAME:  ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
 
-    - name: Push Docker Image
+    - name: Push-Docker-Image
       #run: docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
     
