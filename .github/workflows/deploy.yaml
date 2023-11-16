@@ -28,7 +28,7 @@ jobs:
   build-and-push-docker-image:
     name: Continuous Delivery
     needs: integration
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
@@ -63,30 +63,17 @@ jobs:
           echo "::set-output name=image_exists::true"
         fi
 
-    - name: Build and Push Docker Image
+    - name: Build and Push Docker Image-if-not-exist
       if: steps.check-docker-hub-image.outputs.image_exists == 'false'
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest . 
         docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
         docker image rm -f ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
-
-    #- name: Build and push image to Docker container
-       # run: |
-          # Build a docker container and
-          # push it to ECR so that it can
-          # be deployed to ECS.
-        #  docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest . 
-        #  docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
-        #  docker image rm -f ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
   
-
-    #- name: Pull Docker Image
-    #  run: docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
-    
-    #- name: Run Docker Image to serve users
-    #  run: |
-    #    docker run -d -p 8006:8501 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
-    #- name: Clean previous images and containers
-    #  run: |
-    #    docker system prune -f
+    - name: Run Docker Image to serve users
+      run: |
+        docker run -d -p 8006:8501 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
+    - name: Clean previous images and containers
+      run: |
+        docker system prune -f
 
