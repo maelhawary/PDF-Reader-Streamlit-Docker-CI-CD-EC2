@@ -5,10 +5,15 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  Continous-Integration:
-    name: Continous-Integration
-    runs-on: self-hosted
+  integration:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
@@ -29,35 +34,3 @@ jobs:
     - name: Push Docker Image
       #run: docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
     
-
-
-  Continous-Delivery:
-    name:  Continous-Delivery
-    needs: Continous-Integration
-    runs-on: self-hosted
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}    
-
-    - name: Login to Docker Hub
-      run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-      env:
-        DOCKER_USERNAME:  ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
-
-    - name: Pull Docker Image
-      run: docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
-    
-    - name: Run Docker Image to serve users
-      run: |
-        docker run -d -p 8006:8501 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
-    - name: Clean previous images and containers
-      run: |
-        docker system prune -f
