@@ -47,7 +47,24 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
 
 
-    - name: Pull Docker Image
+    - name: Check if Docker Hub image exists
+      id: check-docker-hub-image
+      run: |
+        IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}
+        IMAGE_TAG=latest  # Replace with the specific tag you want to check
+
+        # Check if the image tag exists on Docker Hub
+        docker pull $IMAGE_NAME:$IMAGE_TAG || exit 0
+        IMAGE_EXISTS=$(docker images -q $IMAGE_NAME:$IMAGE_TAG)
+
+        if [ -z "$IMAGE_EXISTS" ]; then
+          echo "::set-output name=image_exists::false"
+        else
+          echo "::set-output name=image_exists::true"
+        fi
+
+    - name: Build and Push Docker Image
+      if: steps.check-docker-hub-image.outputs.image_exists == 'false'
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest . 
         docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.Docker_REPOSITORY_NAME }}:latest
